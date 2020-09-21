@@ -15,13 +15,15 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestTemplate;
 
 import javax.net.ssl.SSLContext;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.security.*;
 import java.security.cert.CertificateException;
+import java.util.logging.Logger;
 
 @SpringBootApplication
 public class ClientApplication implements CommandLineRunner {
+
+    private static final Logger LOGGER = Logger.getLogger(ClientApplication.class.getName());
 
     @Value("${client.ssl.key-store}")
     private String keyStore;
@@ -39,8 +41,9 @@ public class ClientApplication implements CommandLineRunner {
     }
 
     public void run(String... args) throws Exception {
+        LOGGER.info("Sending request ... ");
         String response = restTemplate().getForObject("https://localhost:8443/ping", String.class);
-        System.out.println(response);
+        LOGGER.info("Response: " + response);
     }
 
     /**
